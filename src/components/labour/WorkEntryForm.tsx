@@ -12,10 +12,21 @@ interface WorkEntryFormProps {
 }
 
 const ARTICLE_OPTIONS = ["T-shirt", "Nikar", "Nikar Suit", "Track Suit"] as const;
+type ArticleOption = (typeof ARTICLE_OPTIONS)[number];
+
+interface WorkEntryFormData {
+  startDate: string;
+  endDate: string;
+  article: ArticleOption;
+  color: string;
+  pieces: string;
+  role: WorkerRole;
+  rate: string;
+}
 
 export const WorkEntryForm = ({ employee, onClose, onSuccess }: WorkEntryFormProps) => {
   const [loading, setLoading] = useState(false);
-  const [formData, setFormData] = useState(() => {
+  const [formData, setFormData] = useState<WorkEntryFormData>(() => {
     const today = new Date();
     const day = today.getDay(); // Sunday = 0
     const daysFromMonday = day === 0 ? 6 : day - 1;
@@ -145,7 +156,7 @@ export const WorkEntryForm = ({ employee, onClose, onSuccess }: WorkEntryFormPro
                 required
                 className="input-field py-3 bg-slate-50 border-none ring-1 ring-slate-100 focus:ring-2 focus:ring-slate-900"
                 value={formData.article}
-                onChange={(e) => setFormData({ ...formData, article: e.target.value })}
+                onChange={(e) => setFormData({ ...formData, article: e.target.value as ArticleOption })}
               >
                 {ARTICLE_OPTIONS.map((option) => (
                   <option key={option} value={option}>
