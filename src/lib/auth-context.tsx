@@ -19,6 +19,12 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
   const pathname = usePathname();
 
   useEffect(() => {
+    if (!auth) {
+      setLoading(false);
+      if (pathname !== "/login") router.push("/login");
+      return;
+    }
+
     const unsubscribe = onAuthStateChanged(auth, (user) => {
       setUser(user);
       setLoading(false);
